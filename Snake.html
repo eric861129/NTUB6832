@@ -1,0 +1,386 @@
+<!--
+    文字備註區塊
+    開發原理簡述:
+    1.先創建遊玩地圖，以table形式，並以二維陣列來分辨欄位Y/X。<= this.TDArray[]
+    2.建立蛇蛇，以陣列做儲存，SnakeArray=[[Y1,X1],[Y2,X2],[Y3,X3],[Y4,X4]...]
+    3.蛇頭為:SnakeArray[0]的座標位置。其餘為蛇身，最後為蛇尾。並且給與CLASS名稱來做css效果
+    4.隨機產生食物[YF,XF]座標 
+    5.方向鍵控制移動，向右GOX+1 向左GOX-1 向下GoX+1 向上 GoX-1 
+    6.當蛇 移動時，沒碰到食物 移除SnakeArray[n](最後一個)，前方新增[0]你走的方向那一步，依據你的方向以原先SnakeArray[0]來依據GOX/GoX做新增。
+    7.當蛇 移動並且碰到食物，不移除最後一個SnakeArray[n]，前方新增...，就會有蛇吃到食物增加長度的效果。
+    8.當蛇 移動時 蛇頭碰到蛇身 (欲新增的位置已經存在於蛇身中)，判定輸了
+    9.當蛇 移動時 蛇頭超出TDArray範圍，判定輸了。
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.js"
+        integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0px;
+        }
+
+        body {
+            background: #CCC;
+        }
+
+        table {
+            border-collapse: collapse;
+            overflow: hidden;
+            border: 4px solid #111;
+            margin: 10px auto 10px auto;
+        }
+
+        td {
+            display: table-cell;
+            width: 25px;
+            height: 25px;
+            background: #CCC;
+            /* border: 0.1px solid #BBB; */
+        }
+
+        .Container {
+            margin: auto;
+        }
+
+        .snake_body {
+            background: #85b8f7;
+            border-radius: 50%/50%;
+        }
+
+        .snake_tail {
+            background-color: #85b8f7;
+            border-radius: 50%/50%;
+        }
+
+        .notsnake {
+            background: #CCC;
+        }
+
+        .food {
+            background: #f4fda0;
+            border-radius: 50%/50%;
+        }
+
+        .snake_head {
+            background: #fa2222;
+            border-radius: 50%;
+        }
+
+        .notice {
+            width: 800px;
+            text-align: center;
+            margin: 10px auto;
+            color: rgb(204, 245, 255);
+            /* color:transparent; */
+            font-size: 24px;
+            background-color: #CCC;
+            -webkit-text-stroke: 0.2px #111;
+            text-shadow: rgba(255, 255, 255, 0.1) -1px -1px 1px, rgba(0, 0, 0, 0.5) 2px 2px 2px;
+            letter-spacing: 3px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="Container">
+        <div class="GameRole">
+            <p class="notice">
+                遊戲規則<br>
+                按下空白鍵可以開始/暫停，重新開始請按F5。<br>
+                方向鍵可以控制前進方向 !蛇蛇啊!去吃下更多的蘋果吧!<br>
+                注意不要咬到自己，也千萬不要撞到牆壁喔!<br>
+                隨著蛇蛇變得越來越大隻!速度會有變化喔!!!
+            </p>
+        </div>
+        <div class="GameArea" id="GameArea">
+        </div>
+    </div>
+</body>
+<script>
+    window.onload = function () {
+        var snake = function () {
+            this.width = 20;
+            this.height = 20;
+            this.snakeId = "snake";
+            this.GoY = 0;//0原地不動  1向右 -1向左
+            this.GoX = 0;//0原地不動  -1向下 1向下
+            this.speed = this.oldSpeed = 10;//移動速度
+            this.TDArray = []; //存放td的二維陣列
+            this.SnakeArray = []; //存放蛇的陣列 
+            this.FoodArray = [];//食物位置
+            this.snakeTimer = null;
+            this.derectkey = 39;//方向初始為向右，接下來按下方向鍵後，這邊會記錄你按了哪一顆方向。
+            this.stop = true;//初始為暫停狀態
+            this.init();
+        }
+        snake.prototype = {
+            //建立遊戲地圖(表格)
+            createMap: function () {
+                var table = document.createElement("table");//建一個TABLE
+                var tbody = document.createElement("tbody");
+                //創建width * height 大小的表格
+                for (var i = 0; i < this.height; i++) {
+                    var tr = document.createElement("tr");
+                    for (var j = 0; j < this.width; j++) {
+                        var td = document.createElement("td");
+                        this.TDArray[i][j] = tr.appendChild(td);
+                    }
+                    tbody.appendChild(tr);
+                }
+                table.appendChild(tbody);
+                table.id = this.snakeId;
+                $('#GameArea').append(table);
+            },
+            //建立二維陣列 (width*height)
+            multiArray: function (width, height) {
+                var array = new Array(width); //長
+                for (var i = 0; i < width; i++) {
+                    array[i] = new Array(height); //寬
+                }
+                return array;
+            },
+            //蛇蛇的初始位置
+            createSnake: function () {
+                this.SnakeArray = [];
+                this.SnakeArray.push([8, 5]);
+                this.SnakeArray.push([8, 4]);
+                this.SnakeArray.push([8, 3]);
+                this.GiveSnakeClass();
+                this.TDArray[this.SnakeArray[0][0]][this.SnakeArray[0][1]].className = "snake_head";
+                this.TDArray[this.SnakeArray[this.SnakeArray.length - 1][0]][this.SnakeArray[this.SnakeArray.length - 1][1]].className = "snake_tail";
+            },
+            //給蛇的位置，給與CLASS名稱"snake_body"。
+            GiveSnakeClass: function () {
+                var SnakeArray = this.SnakeArray;
+                for (var i = 0; i < SnakeArray.length; i++) {
+                    this.TDArray[SnakeArray[i][0]][SnakeArray[i][1]].className = "snake_body";
+                }
+            },
+            //初始化食物的位置
+            createFood: function () {
+                this.FoodArray = this.randomPoint();
+                if (this.isInSnake(this.FoodArray)) {
+                    this.createFood();
+                    return false;
+                }
+                this.TDArray[this.FoodArray[0]][this.FoodArray[1]].className = "food";
+            },
+            //產生隨機點
+            randomPoint: function () {
+                var p = []; //用來存放產生的隨機點的陣列
+                var initX = 0;
+                var initY = 0;
+                var endX = this.width;
+                var endY = this.height;
+                p[0] = Math.floor(Math.random() * (endX - initX)) + Math.floor(initX);
+                p[1] = Math.floor(Math.random() * (endY - initY)) + Math.floor(initY)
+                return p;
+            },
+            //判斷點是否在蛇身上
+            isInSnake: function (point, pos) {
+                var SnakeArray = this.SnakeArray;
+                //判斷 傳入的點型別是否為陣列Array
+                if (point instanceof Array) {
+                    var n = SnakeArray.length;
+                    for (var i = pos || 0; i < n; i++) {
+                        //判斷點在蛇身上
+                        if (point[0] == SnakeArray[i][0] && point[1] == SnakeArray[i][1])
+                            return true;
+                    }
+                }
+                return false;
+            },
+            //判斷蛇是否撞牆(超出width 及 height 大小)
+            isInWall: function (point) {
+                if (point instanceof Array) {
+                    if (point[0] < 0 || point[0] > this.width1 - 1 || point[1] < 0 || point[1] > this.height - 1)
+                        return true;
+                }
+                return false;
+            },
+            //鍵盤輸入，移動事件觸發點
+            move: function () {
+                var _this = this;
+                //有snakeTimer  clearInterval 每秒執行 
+                if (_this.snakeTimer) { clearInterval(_this.snakeTimer); }
+                //setInterval(執行的動作 , 時間(毫秒))
+                _this.snakeTimer = setInterval(_this.bind(_this.main, _this), Math.floor(3000 / this.speed));
+            },
+            //確定鍵盤事件
+            keyDown: function (e) {
+                var e = e || window.event;
+                var keycode = e ? e.keyCode : 0;
+                //按下 F5 重新整理
+                if (keycode == 116)
+                    window.location.reload();
+                //按下空白鍵 暫停/開始
+                if (keycode == 32) {
+                    //若是暫停 > 變成開始且開啟移動的方法
+                    if (this.stop) {
+                        this.move();
+                        this.stop = false;
+                    }//開啟暫停，不可移動，不受到方向鍵影響
+                    else {
+                        if (this.snakeTimer)
+                            clearInterval(this.snakeTimer);
+                        this.stop = true;
+                    }
+                }
+                //當按下方向鍵而非暫停狀態時，方向鍵觸發移動。
+                if (keycode >= 37 && keycode <= 40) {
+                    if (!this.stop)
+                        this.derectkey = keycode;
+                }
+                return false;
+            },
+            //函式修正this
+            bind: function (fn, context) {
+                return function () {
+                    return fn.apply(context, arguments);
+                }
+            },
+            //重新開始(設定值初始化)
+            reset() {
+                this.GoY = 0;
+                this.GoX = 0;
+                this.speed = this.oldSpeed;
+                this.derectkey = 39;
+                this.stop = true;
+                this.init();
+            },
+            //初始化條件  控制各方法執行
+            main: function () {
+                var SnakeArray = this.SnakeArray;
+                //temp 蛇尾
+                var temp = SnakeArray[SnakeArray.length - 1], isEnd = false;
+                headX = SnakeArray[0][0];
+                headY = SnakeArray[0][1];
+                msg = "";
+                switch (this.derectkey) {
+                    case 37://左
+                        if (this.GoX != 1) { this.GoX = -1; this.GoY = 0 }
+                        break;
+                    case 38://上
+                        if (this.GoY != 1) { this.GoY = -1; this.GoX = 0 }
+                        break;
+                    case 39://右
+                        if (this.GoX != -1) { this.GoX = 1; this.GoY = 0 }
+                        break;
+                    case 40://下
+                        if (this.GoY != -1) { this.GoY = 1; this.GoX = 0 }
+                }
+                //console.log(this.GoY, this.GoX)
+                headX += this.GoY;
+                headY += this.GoX;
+                console.log(headX, headY)
+                //如果 蛇頭碰到食物
+                if (headX == this.FoodArray[0] && headY == this.FoodArray[1]) {
+                    //使用 unshift 將食物的FoodArray加入SnakeArray的頭部 變成蛇頭 
+                    //食物的FoodArray 變成 snake[[0][0]]
+                    this.SnakeArray.unshift(this.FoodArray);
+                    this.createFood();
+                    //控制蛇的速度，當蛇的長度越長速度越快。
+                    if (this.SnakeArray.length > 4) {
+                        if (this.SnakeArray.length == 5) {
+                            this.speed += 5;
+                        }
+                        else if (this.SnakeArray.length == 10) {
+                            this.speed += 5;
+                        }
+                        else if (this.SnakeArray.length == 15) {
+                            this.speed += 5;
+                        }
+                        else if (this.SnakeArray.length == 20) {
+                            this.speed -= 20;
+                        }
+                        else if (this.SnakeArray.length == 25) {
+                            this.speed += 25;
+                        }
+                        else if (this.SnakeArray.length == 30) {
+                            this.speed += 5;
+                        }
+                        else if (this.SnakeArray.length == 35) {
+                            this.speed += 5;
+                        }
+                        else if (this.SnakeArray.length == 40) {
+                            this.speed -= 30;
+                        }
+                        else if (this.SnakeArray.length == 45) {
+                            this.speed += 35;
+                        }
+                        else if (this.SnakeArray.length == 50) {
+                            this.speed += 5;
+                        }
+                        else if (this.SnakeArray.length == 55) {
+                            this.speed -= 45;
+                        }
+                        else if (this.SnakeArray.length == 60) {
+                            this.speed += 70;
+                        }
+                        this.move();
+                    }
+                }
+                else {
+                    for (var i = this.SnakeArray.length - 1; i > 0; i--) {
+                        this.SnakeArray[i] = this.SnakeArray[i - 1];
+                    }
+                    //蛇頭
+                    this.SnakeArray[0] = [headX, headY];
+                    //判斷是否撞到自己
+                    if (this.isInSnake(this.SnakeArray[0], 1)) {
+                        isEnd = true;
+                        msg = "別咬到自己啊!";
+                    }
+                    //判斷是否撞牆
+                    else if (this.isInWall(this.SnakeArray[0])) {
+                        isEnd = true;
+                        msg = "牆壁不能吃啊!";
+                    }
+                    //結束
+                    if (isEnd) {
+                        if (this.snakeTimer)
+                            clearInterval(this.snakeTimer);
+                        var score = this.SnakeArray.length - 3;
+                        //confirm 跳出確認視窗，回傳bool
+                        if (confirm(msg + "\n你的分數是：" + score + "！\n 是否重新開始？")) {
+                            this.reset();
+                        }
+                        return false;
+                    }
+                    //將非蛇頭蛇身給命名為notSnake 變成背景色
+                    this.TDArray[temp[0]][temp[1]].className = "notSnake";
+                }
+                this.GiveSnakeClass();
+                //console.log(this.SnakeArray)
+                this.TDArray[headX][headY].className = "snake_head";
+                this.TDArray[this.SnakeArray[this.SnakeArray.length - 1][0]][this.SnakeArray[this.SnakeArray.length - 1][1]].className = "snake_tail";
+            }, init: function () {
+                var _this = this;
+                snake_id = document.getElementById(_this.snakeId) || 0;
+                if (snake_id) {
+                    document.body.removeChild(snake_id);
+                }
+                _this.TDArray = _this.multiArray(_this.width, _this.height);
+                _this.createMap();
+                _this.createSnake();
+                _this.createFood();
+                document.onkeydown = _this.bind(_this.keyDown, _this);
+            }
+        }
+
+        new snake();
+    }
+</script>
+
+</html>
