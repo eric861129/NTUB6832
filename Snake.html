@@ -21,16 +21,20 @@
     <title>Snake</title>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.js"
         integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
-
+    <script src="https://kit.fontawesome.com/f7d0821b25.js" crossorigin="anonymous"></script>
     <style type="text/css">
         * {
             margin: 0;
             padding: 0;
             border: 0px;
+            box-sizing: border-box;
         }
 
         body {
             background: #CCC;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         table {
@@ -50,6 +54,7 @@
 
         .Container {
             margin: auto;
+            position: relative;
         }
 
         .snake_body {
@@ -89,6 +94,67 @@
             letter-spacing: 3px;
             font-weight: bold;
         }
+
+        .Keyboard_bnt {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            padding: 8px 15px;
+            margin: 8px 4px;
+            border-radius: 10px;
+            background: linear-gradient(180deg, #282828, #202020);
+            box-shadow: inset -8px 0 8px rgba(0, 0, 0, 0.15),
+                inset 0 -8px 8px rgba(0, 0, 0, 0.25),
+                0 0 0 2px rgba(0, 0, 0, 0.75),
+                10px 20px 25px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+
+        }
+
+        .Keyboard_bnt::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 4px;
+            bottom: 14px;
+            right: 12px;
+            background: linear-gradient(90deg, #232323, #4a4a4a);
+            border-radius: 10px;
+            box-shadow: -10px -10px 10px rgba(255, 255, 255, 0.25),
+                10px 5px 10px rgba(0, 0, 0, 0.15);
+            border-left: 1px solid #0004;
+            border-bottom: 1px solid #0004;
+            border-top: 1px solid #0009;
+        }
+
+        .Keyboard_bnt:last-child {
+            width: 100%;
+        }
+
+        .Keyboard_bnt i {
+            position: relative;
+            color: #fff;
+            font-style: normal;
+            text-transform: uppercase;
+            font-size: 1.5em;
+        }
+
+        .Keyboard_bnt:hover {
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        .Keyboard_bnt_hover {
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+
+        }
+
+        .Keyboard_Area {
+            width: 300px;
+            position: absolute;
+            right: 20px;
+            bottom: 10px;
+        }
     </style>
 </head>
 
@@ -105,6 +171,17 @@
         </div>
         <div class="GameArea" id="GameArea">
         </div>
+        <div class="Keyboard_Area">
+            <div class="Keyboard">
+                <span class="Keyboard_bnt" id="F5_Keyboard_bnt"><i id="F5">F5</i></span>
+                <span class="Keyboard_bnt" id="UP_Keyboard_bnt"><i id="UP" class="fas fa-angle-up"></i></span><br>
+                <span class="Keyboard_bnt" id="LEFT_Keyboard_bnt"><i id="LEFT" class="fas fa-angle-left"></i></span>
+                <span class="Keyboard_bnt" id="DOWN_Keyboard_bnt"><i id="DOWN" class="fas fa-angle-down"></i></span>
+                <span class="Keyboard_bnt" id="RIGHT_Keyboard_bnt"><i id="RIGHT" class="fas fa-angle-right"></i></span><br>
+                <span class="Keyboard_bnt" id="Space_Keyboard_bnt"><i"></i></span>
+            </div>
+        </div>
+
     </div>
 </body>
 <script>
@@ -237,12 +314,42 @@
                         this.stop = true;
                     }
                 }
+                if (keycode == 37) {//左
+                    $('#LEFT_Keyboard_bnt').addClass("Keyboard_bnt_hover");
+                } else if (keycode == 38) {//上
+                    $('#UP_Keyboard_bnt').addClass("Keyboard_bnt_hover");
+                }
+                else if (keycode == 39) {//右
+                    $('#RIGHT_Keyboard_bnt').addClass("Keyboard_bnt_hover");
+                }
+                else if (keycode == 40) {//下
+                    $('#DOWN_Keyboard_bnt').addClass("Keyboard_bnt_hover");
+                }else if (keycode == 32) {//空白
+                    $('#Space_Keyboard_bnt').addClass("Keyboard_bnt_hover");
+                }
                 //當按下方向鍵而非暫停狀態時，方向鍵觸發移動。
                 if (keycode >= 37 && keycode <= 40) {
                     if (!this.stop)
                         this.derectkey = keycode;
                 }
                 return false;
+            },
+            keyUp: function (e) {
+                var e = e || window.event;
+                var keycode = e ? e.keyCode : 0;
+                if (keycode == 37) {//左
+                    $('#LEFT_Keyboard_bnt').removeClass("Keyboard_bnt_hover");
+                } else if (keycode == 38) {//上
+                    $('#UP_Keyboard_bnt').removeClass("Keyboard_bnt_hover");
+                }
+                else if (keycode == 39) {//右
+                    $('#RIGHT_Keyboard_bnt').removeClass("Keyboard_bnt_hover");
+                }
+                else if (keycode == 40) {//下
+                    $('#DOWN_Keyboard_bnt').removeClass("Keyboard_bnt_hover");
+                }else if (keycode == 32) {//空白
+                    $('#Space_Keyboard_bnt').removeClass("Keyboard_bnt_hover");
+                }
             },
             //函式修正this
             bind: function (fn, context) {
@@ -376,6 +483,8 @@
                 _this.createSnake();
                 _this.createFood();
                 document.onkeydown = _this.bind(_this.keyDown, _this);
+                document.onkeyup = _this.bind(_this.keyUp, _this);
+                
             }
         }
 
