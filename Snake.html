@@ -34,7 +34,7 @@
             background: #CCC;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            min-height: 90vh;
         }
 
         table {
@@ -55,6 +55,8 @@
         .Container {
             margin: auto;
             position: relative;
+            min-height: 90vh;
+
         }
 
         .snake_body {
@@ -82,15 +84,15 @@
         }
 
         .notice {
-            width: 800px;
-            text-align: center;
+            width: 280px;
+            /* text-align: center; */
             margin: 10px auto;
-            color: rgb(204, 245, 255);
+            color: rgb(212, 245, 253);
             /* color:transparent; */
-            font-size: 24px;
+            font-size: 18px;
             background-color: #CCC;
-            -webkit-text-stroke: 0.2px #111;
-            text-shadow: rgba(255, 255, 255, 0.1) -1px -1px 1px, rgba(0, 0, 0, 0.5) 2px 2px 2px;
+            -webkit-text-stroke: 0.3px #111;
+            text-shadow: rgba(14, 9, 9, 0.1) -1px -1px 1px, rgba(0, 0, 0, 0.5) 2px 2px 2px;
             letter-spacing: 3px;
             font-weight: bold;
         }
@@ -140,10 +142,6 @@
             font-size: 1.5em;
         }
 
-        .Keyboard_bnt:hover {
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-        }
-
         .Keyboard_bnt_hover {
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
 
@@ -155,6 +153,11 @@
             right: 20px;
             bottom: 10px;
         }
+        .GameRole{
+            position: absolute;
+            left: 10px;
+            top: 10px;
+        }
     </style>
 </head>
 
@@ -163,22 +166,30 @@
         <div class="GameRole">
             <p class="notice">
                 遊戲規則<br>
-                按下空白鍵可以開始/暫停，重新開始請按F5。<br>
-                方向鍵可以控制前進方向 !蛇蛇啊!去吃下更多的蘋果吧!<br>
-                注意不要咬到自己，也千萬不要撞到牆壁喔!<br>
-                隨著蛇蛇變得越來越大隻!速度會有變化喔!!!
+                按下空白鍵可以開始/暫停，<br>重新開始請按F5。<br>
+                方向鍵可以控制前進方向 !<br>蛇蛇啊!去吃下更多的蘋果吧!<br>
+                注意不要咬到自己，<br>也千萬不要撞到牆壁喔!<br>
+                隨著蛇蛇變得越來越大隻!<br>速度會有變化喔!!!
             </p>
         </div>
         <div class="GameArea" id="GameArea">
         </div>
         <div class="Keyboard_Area">
             <div class="Keyboard">
-                <span class="Keyboard_bnt" id="F5_Keyboard_bnt"><i id="F5">F5</i></span>
-                <span class="Keyboard_bnt" id="UP_Keyboard_bnt"><i id="UP" class="fas fa-angle-up"></i></span><br>
-                <span class="Keyboard_bnt" id="LEFT_Keyboard_bnt"><i id="LEFT" class="fas fa-angle-left"></i></span>
-                <span class="Keyboard_bnt" id="DOWN_Keyboard_bnt"><i id="DOWN" class="fas fa-angle-down"></i></span>
-                <span class="Keyboard_bnt" id="RIGHT_Keyboard_bnt"><i id="RIGHT" class="fas fa-angle-right"></i></span><br>
-                <span class="Keyboard_bnt" id="Space_Keyboard_bnt"><i"></i></span>
+                <span class="Keyboard_bnt" id="116" onmousedown="onmouseDownclick(this.id)"
+                    onmouseup="onmouseUpclick(this.id)"><i id="F5">F5</i></span>
+                <span class="Keyboard_bnt" id="38" onmousedown="onmouseDownclick(this.id)"
+                    onmouseup="onmouseUpclick(this.id)"><i id="UP" class="fas fa-angle-up"></i></span><br>
+                <span class="Keyboard_bnt" id="37" onmousedown="onmouseDownclick(this.id)"
+                    onmouseup="onmouseUpclick(this.id)"><i id="LEFT" class="fas fa-angle-left"></i></span>
+                <span class="Keyboard_bnt" id="40" onmousedown="onmouseDownclick(this.id)"
+                    onmouseup="onmouseUpclick(this.id)"><i id="DOWN" class="fas fa-angle-down"></i></span>
+                <span class="Keyboard_bnt" id="39" onmousedown="onmouseDownclick(this.id)"
+                    onmouseup="onmouseUpclick(this.id)"><i id="RIGHT" class="fas fa-angle-right"></i></span><br>
+                <span class="Keyboard_bnt" id="32" onmousedown="onmouseDownclick(this.id)"
+                    onmouseup="onmouseUpclick(this.id)">
+                    <i"></i>
+                </span>
             </div>
         </div>
 
@@ -314,42 +325,45 @@
                         this.stop = true;
                     }
                 }
-                if (keycode == 37) {//左
-                    $('#LEFT_Keyboard_bnt').addClass("Keyboard_bnt_hover");
-                } else if (keycode == 38) {//上
-                    $('#UP_Keyboard_bnt').addClass("Keyboard_bnt_hover");
+                if (keycode >= 32 && keycode <= 40) {
+                    $(`#${keycode}`).addClass("Keyboard_bnt_hover");
                 }
-                else if (keycode == 39) {//右
-                    $('#RIGHT_Keyboard_bnt').addClass("Keyboard_bnt_hover");
-                }
-                else if (keycode == 40) {//下
-                    $('#DOWN_Keyboard_bnt').addClass("Keyboard_bnt_hover");
-                }else if (keycode == 32) {//空白
-                    $('#Space_Keyboard_bnt').addClass("Keyboard_bnt_hover");
-                }
+
                 //當按下方向鍵而非暫停狀態時，方向鍵觸發移動。
                 if (keycode >= 37 && keycode <= 40) {
                     if (!this.stop)
                         this.derectkey = keycode;
+                    // console.log(this.derectkey)
+
                 }
                 return false;
             },
+            //放開鍵盤
             keyUp: function (e) {
                 var e = e || window.event;
                 var keycode = e ? e.keyCode : 0;
-                if (keycode == 37) {//左
-                    $('#LEFT_Keyboard_bnt').removeClass("Keyboard_bnt_hover");
-                } else if (keycode == 38) {//上
-                    $('#UP_Keyboard_bnt').removeClass("Keyboard_bnt_hover");
+                if (keycode >= 32 && keycode <= 40) {
+                    $(`#${keycode}`).removeClass("Keyboard_bnt_hover");
                 }
-                else if (keycode == 39) {//右
-                    $('#RIGHT_Keyboard_bnt').removeClass("Keyboard_bnt_hover");
-                }
-                else if (keycode == 40) {//下
-                    $('#DOWN_Keyboard_bnt').removeClass("Keyboard_bnt_hover");
-                }else if (keycode == 32) {//空白
-                    $('#Space_Keyboard_bnt').removeClass("Keyboard_bnt_hover");
-                }
+
+            },
+            //滑鼠按下(旁邊鍵盤)
+            onmouseDown: function (id) {
+                // console.log(id)
+                $(`#${id}`).addClass("Keyboard_bnt_hover");
+
+                var createEvent = new KeyboardEvent('keydown', {
+                    altKey: true,
+                    shiftKey: true,
+                    keyCode: id,
+                    code: id
+                });
+                document.dispatchEvent(createEvent);
+            },
+            //滑鼠放開(旁邊鍵盤)
+            onmouseUp: function (id) {
+                // console.log(id)
+                $(`#${id}`).removeClass("Keyboard_bnt_hover");
             },
             //函式修正this
             bind: function (fn, context) {
@@ -374,6 +388,7 @@
                 headX = SnakeArray[0][0];
                 headY = SnakeArray[0][1];
                 msg = "";
+                // console.log(this.derectkey)
                 switch (this.derectkey) {
                     case 37://左
                         if (this.GoX != 1) { this.GoX = -1; this.GoY = 0 }
@@ -390,7 +405,7 @@
                 //console.log(this.GoY, this.GoX)
                 headX += this.GoY;
                 headY += this.GoX;
-                console.log(headX, headY)
+                //console.log(headX, headY)
                 //如果 蛇頭碰到食物
                 if (headX == this.FoodArray[0] && headY == this.FoodArray[1]) {
                     //使用 unshift 將食物的FoodArray加入SnakeArray的頭部 變成蛇頭 
@@ -484,7 +499,9 @@
                 _this.createFood();
                 document.onkeydown = _this.bind(_this.keyDown, _this);
                 document.onkeyup = _this.bind(_this.keyUp, _this);
-                
+                onmouseDownclick = _this.bind(_this.onmouseDown, _this);
+                onmouseUpclick = _this.bind(_this.onmouseUp, _this);
+
             }
         }
 
