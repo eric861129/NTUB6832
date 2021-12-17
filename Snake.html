@@ -153,7 +153,8 @@
             right: 20px;
             bottom: 10px;
         }
-        .GameRole{
+
+        .GameRole {
             position: absolute;
             left: 10px;
             top: 10px;
@@ -176,19 +177,19 @@
         </div>
         <div class="Keyboard_Area">
             <div class="Keyboard">
-                <span class="Keyboard_bnt" id="116" onmousedown="onmouseDownclick(this.id)"
-                    onmouseup="onmouseUpclick(this.id)"><i id="F5">F5</i></span>
-                <span class="Keyboard_bnt" id="38" onmousedown="onmouseDownclick(this.id)"
-                    onmouseup="onmouseUpclick(this.id)"><i id="UP" class="fas fa-angle-up"></i></span><br>
-                <span class="Keyboard_bnt" id="37" onmousedown="onmouseDownclick(this.id)"
-                    onmouseup="onmouseUpclick(this.id)"><i id="LEFT" class="fas fa-angle-left"></i></span>
-                <span class="Keyboard_bnt" id="40" onmousedown="onmouseDownclick(this.id)"
-                    onmouseup="onmouseUpclick(this.id)"><i id="DOWN" class="fas fa-angle-down"></i></span>
-                <span class="Keyboard_bnt" id="39" onmousedown="onmouseDownclick(this.id)"
-                    onmouseup="onmouseUpclick(this.id)"><i id="RIGHT" class="fas fa-angle-right"></i></span><br>
-                <span class="Keyboard_bnt" id="32" onmousedown="onmouseDownclick(this.id)"
-                    onmouseup="onmouseUpclick(this.id)">
-                    <i"></i>
+                <span class="Keyboard_bnt" id="116" onmousedown="onmouseDownEvent(this.id)"
+                    onmouseup="onmouseUpEvent(this.id)"><i id="F5">F5</i></span>
+                <span class="Keyboard_bnt" id="38" onmousedown="onmouseDownEvent(this.id)"
+                    onmouseup="onmouseUpEvent(this.id)"><i id="UP" class="fas fa-angle-up"></i></span><br>
+                <span class="Keyboard_bnt" id="37" onmousedown="onmouseDownEvent(this.id)"
+                    onmouseup="onmouseUpEvent(this.id)"><i id="LEFT" class="fas fa-angle-left"></i></span>
+                <span class="Keyboard_bnt" id="40" onmousedown="onmouseDownEvent(this.id)"
+                    onmouseup="onmouseUpEvent(this.id)"><i id="DOWN" class="fas fa-angle-down"></i></span>
+                <span class="Keyboard_bnt" id="39" onmousedown="onmouseDownEvent(this.id)"
+                    onmouseup="onmouseUpEvent(this.id)"><i id="RIGHT" class="fas fa-angle-right"></i></span><br>
+                <span class="Keyboard_bnt" id="32" onmousedown="onmouseDownEvent(this.id)"
+                    onmouseup="onmouseUpEvent(this.id)">
+                    <i></i>
                 </span>
             </div>
         </div>
@@ -326,6 +327,7 @@
                     }
                 }
                 if (keycode >= 32 && keycode <= 40) {
+                    //藉由新增CLASS 來達成CSS效果的渲染，來達成此CSS渲染可以取消的效果
                     $(`#${keycode}`).addClass("Keyboard_bnt_hover");
                 }
 
@@ -334,7 +336,6 @@
                     if (!this.stop)
                         this.derectkey = keycode;
                     // console.log(this.derectkey)
-
                 }
                 return false;
             },
@@ -343,6 +344,7 @@
                 var e = e || window.event;
                 var keycode = e ? e.keyCode : 0;
                 if (keycode >= 32 && keycode <= 40) {
+                    //移除class達成css渲染被取消 並且回復成原先的css效果
                     $(`#${keycode}`).removeClass("Keyboard_bnt_hover");
                 }
 
@@ -350,19 +352,22 @@
             //滑鼠按下(旁邊鍵盤)
             onmouseDown: function (id) {
                 // console.log(id)
+                //藉由新增CLASS 來達成CSS效果的渲染，來達成此CSS渲染可以取消的效果
                 $(`#${id}`).addClass("Keyboard_bnt_hover");
-
+                //創建一事件，此事件為鍵盤觸發事件，帶入keyCode=id，
                 var createEvent = new KeyboardEvent('keydown', {
                     altKey: true,
                     shiftKey: true,
                     keyCode: id,
                     code: id
                 });
+                //觸發一鍵盤事件，此事件會執行 keyDown 
                 document.dispatchEvent(createEvent);
             },
             //滑鼠放開(旁邊鍵盤)
             onmouseUp: function (id) {
                 // console.log(id)
+                //移除class達成css渲染被取消 並且回復成原先的css效果
                 $(`#${id}`).removeClass("Keyboard_bnt_hover");
             },
             //函式修正this
@@ -499,8 +504,8 @@
                 _this.createFood();
                 document.onkeydown = _this.bind(_this.keyDown, _this);
                 document.onkeyup = _this.bind(_this.keyUp, _this);
-                onmouseDownclick = _this.bind(_this.onmouseDown, _this);
-                onmouseUpclick = _this.bind(_this.onmouseUp, _this);
+                onmouseDownEvent = _this.bind(_this.onmouseDown, _this);
+                onmouseUpEvent = _this.bind(_this.onmouseUp, _this);
 
             }
         }
