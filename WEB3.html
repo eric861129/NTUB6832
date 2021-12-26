@@ -1,3 +1,13 @@
+<!-- 
+  使用固定螢幕的方式做戒菸宣導網站
+  第一頁 使用動畫效果讓煙霧一樣消散，跟文字所表達的抽菸只有短暫的快樂相呼應，只有短暫的顯示
+  第二頁 簡單的堤到健康，而粉紅色與淺藍色經常代表健康的顏色，於是使用這兩顏色作背景漸層。
+  第三頁 則是使用文字搭配顏色變化做成菸的樣子，並且最後使用陰影的效果讓文字的煙像是在燃燒一樣。
+  第四頁 使用動畫效果讓曲線再跑，彷彿心電圖的感覺，並且讓動畫的速度很急促，讓人有感覺到心跳加速的感覺。
+  第五頁 使用動畫效果 讓座出來的肺部的樣式 隨著抽菸時間增加而呈現肺部吸氣急促並且肺部變色，最後導致肺部壞死的感覺
+  第六頁 結尾再次宣導不要吸菸，而背景使用動畫達到像是流星雨的感覺，因為流星雨經常代表著希望以及美好的意思，意味著戒菸後的生活充滿的希望與美好。
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,12 +15,660 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="initCSS.css">
+    <link rel="stylesheet" href="/ShareCss/initCSS.css" />
+    <link rel="stylesheet" href="https://unpkg.com/fullpage.js/dist/fullpage.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100">
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.js"
+        integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/f7d0821b25.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/fullpage.js/dist/fullpage.min.js"></script>
+
     <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            overflow: hidden;
+
+        }
+
+        .banner {
+            width: 100vw;
+            /* height: 100%; */
+            overflow: hidden;
+        }
+
+        .Dropi {
+            position: absolute;
+            height: 150px;
+            background: linear-gradient(transparent, #fff);
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            animation: RainAnimate 5s linear infinite;
+        }
+
+        .Dropi:nth-child(6n+1) {
+            background: linear-gradient(transparent, #0ff);
+        }
+
+        .Dropi:nth-child(6n+2) {
+            background: linear-gradient(transparent, #0f0);
+        }
+
+        .Dropi:nth-child(6n+3) {
+            background: linear-gradient(transparent, #f00);
+        }
+
+        .Dropi:nth-child(6n+4) {
+            background: linear-gradient(transparent, #f0f);
+        }
+
+        .Dropi:nth-child(6n+5) {
+            background: linear-gradient(transparent, #ff0);
+        }
+
+        .Dropi:nth-child(6n+6) {
+            background: linear-gradient(transparent, #00f);
+        }
+
+        @keyframes RainAnimate {
+            0% {
+                transform: translateY(-200px);
+            }
+
+            100% {
+                transform: translateY(calc(100vh + 200px));
+
+            }
+        }
+
+        .section {
+            text-align: center;
+            font-size: 3em;
+            display: flex;
+            justify-content: center;
+        }
+
+
+        .Cigarette {
+            transform-style: preserve-3d;
+            position: relative;
+            font-size: 50px;
+        }
+
+
+        .Noooo {
+            font-style: normal;
+            color: #ec9535;
+        }
+
+        .XFront {
+            color: #fff;
+        }
+
+        .X {
+            position: absolute;
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            color: #f00;
+            font-size: 100vh;
+            line-height: 100vh;
+            left: 0px;
+            top: -50vh;
+        }
+
+
+        .LastI {
+            color: #f00;
+            filter: blur(2px);
+            text-shadow: -4px 0 2px #000,
+                8px 0 20px #f00,
+                8px 0 24px #f00,
+                8px 0 0 #222,
+                12px 0 #555,
+                16px 0 #666,
+                20px 0 #888,
+                24px 0 #999,
+                26px 0 #999,
+                28px 0 #999,
+                30px 0 #999,
+                32px 0 #999,
+                34px 0 #999,
+                36px 0 #999,
+                38px 0 #999,
+                40px 0 #999;
+        }
+
+
+        .SetMID {
+            width: 1000px;
+            height: 700px;
+            margin: auto;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+            display: inline-flex;
+            transform-style: preserve-3d;
+        }
+
+        .SecPage {
+            height: 100vh;
+            background: linear-gradient(15deg, #00a9f1, #cf00f1);
+            color: #fff;
+            position: relative;
+            padding-top: 20vh;
+        }
+
+
+        .SecPageTXT {
+            font-family: Roboto, sans-serif;
+            font-weight: 100;
+            font-size: 1.76em;
+            margin: 0;
+            padding: 30px;
+            text-transform: uppercase;
+        }
+
+        .SecPageTXT span {
+            display: inline-block;
+            transition: transform 0.6s cubic-bezier(0.65, 0.02, 0.23, 1);
+            transform: translate(20%, 100%);
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.03em;
+            text-shadow: 3px 4px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .Dissipates {
+            overflow: hidden;
+            font: 5vw/100vh "Finger Paint";
+            text-align: center;
+            color: transparent;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .Dissipates span {
+            display: inline-block;
+            text-shadow: 0 0 0 whitesmoke;
+            -webkit-animation: smoky 5s 5s infinite;
+            animation: smoky 5s 5s infinite;
+        }
+
+        .Dissipates span:nth-child(even) {
+            -webkit-animation-name: smoky-mirror;
+            animation-name: smoky-mirror;
+            -webkit-animation: smoky 5s 5s infinite;
+            animation: smoky 5s 5s infinite;
+        }
+
+        @-webkit-keyframes smoky {
+            60% {
+                text-shadow: 0 0 40px whitesmoke;
+            }
+
+            to {
+                transform: translate3d(15rem, -8rem, 0) rotate(-40deg) skewX(70deg) scale(1.5);
+                text-shadow: 0 0 20px whitesmoke;
+                opacity: 0;
+            }
+        }
+
+        @keyframes smoky {
+            60% {
+                text-shadow: 0 0 40px whitesmoke;
+            }
+
+            to {
+                transform: translate3d(15rem, -8rem, 0) rotate(-40deg) skewX(70deg) scale(1.5);
+                text-shadow: 0 0 20px whitesmoke;
+                opacity: 0;
+            }
+        }
+
+        @-webkit-keyframes smoky-mirror {
+            60% {
+                text-shadow: 0 0 40px whitesmoke;
+            }
+
+            to {
+                transform: translate3d(18rem, -8rem, 0) rotate(-40deg) skewX(-70deg) scale(2);
+                text-shadow: 0 0 20px whitesmoke;
+                opacity: 0;
+            }
+        }
+
+        @keyframes smoky-mirror {
+            60% {
+                text-shadow: 0 0 40px whitesmoke;
+            }
+
+            to {
+                transform: translate3d(18rem, -8rem, 0) rotate(-40deg) skewX(-70deg) scale(2);
+                text-shadow: 0 0 20px whitesmoke;
+                opacity: 0;
+            }
+        }
+
+        .Dissipates span:nth-of-type(1) {
+            -webkit-animation-delay: 3.1s;
+            animation-delay: 3.1s;
+        }
+
+        .Dissipates span:nth-of-type(2) {
+            -webkit-animation-delay: 3.2s;
+            animation-delay: 3.2s;
+        }
+
+        .Dissipates span:nth-of-type(3) {
+            -webkit-animation-delay: 3.3s;
+            animation-delay: 3.3s;
+        }
+
+        .Dissipates span:nth-of-type(4) {
+            -webkit-animation-delay: 3.4s;
+            animation-delay: 3.4s;
+        }
+
+        .Dissipates span:nth-of-type(5) {
+            -webkit-animation-delay: 3.5s;
+            animation-delay: 3.5s;
+        }
+
+        .Dissipates span:nth-of-type(6) {
+            -webkit-animation-delay: 3.6s;
+            animation-delay: 3.6s;
+        }
+
+        .Dissipates span:nth-of-type(7) {
+            -webkit-animation-delay: 3.7s;
+            animation-delay: 3.7s;
+        }
+
+        .Dissipates span:nth-of-type(8) {
+            -webkit-animation-delay: 3.8s;
+            animation-delay: 3.8s;
+        }
+
+        .Dissipates span:nth-of-type(9) {
+            -webkit-animation-delay: 3.9s;
+            animation-delay: 3.9s;
+        }
+
+        .Dissipates span:nth-of-type(10) {
+            -webkit-animation-delay: 4s;
+            animation-delay: 4s;
+        }
+
+        .Dissipates span:nth-of-type(11) {
+            -webkit-animation-delay: 4.1s;
+            animation-delay: 4.1s;
+        }
+
+        .Dissipates span:nth-of-type(12) {
+            -webkit-animation-delay: 4.2s;
+            animation-delay: 4.2s;
+        }
+
+        .Dissipates span:nth-of-type(13) {
+            -webkit-animation-delay: 4.3s;
+            animation-delay: 4.3s;
+        }
+
+        .Dissipates span:nth-of-type(14) {
+            -webkit-animation-delay: 4.4s;
+            animation-delay: 4.4s;
+        }
+
+        .Dissipates span:nth-of-type(15) {
+            -webkit-animation-delay: 4.5s;
+            animation-delay: 4.5s;
+        }
+
+        .Dissipates span:nth-of-type(16) {
+            -webkit-animation-delay: 4.6s;
+            animation-delay: 4.6s;
+        }
+
+        .Dissipates span:nth-of-type(17) {
+            -webkit-animation-delay: 4.7s;
+            animation-delay: 4.7s;
+        }
+
+        .Dissipates span:nth-of-type(18) {
+            -webkit-animation-delay: 4.8s;
+            animation-delay: 4.8s;
+        }
+
+        .Dissipates span:nth-of-type(19) {
+            -webkit-animation-delay: 4.9s;
+            animation-delay: 4.9s;
+        }
+
+        .Dissipates span:nth-of-type(20) {
+            -webkit-animation-delay: 5s;
+            animation-delay: 5s;
+        }
+
+        .Dissipates span:nth-of-type(21) {
+            -webkit-animation-delay: 5.1s;
+            animation-delay: 5.1s;
+        }
+
+        .WavyArea {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* background-color: #222; */
+            height: 100vh;
+        }
+
+        .Wavy {
+            position: relative;
+            width: 80vw;
+            height: 60vh;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        .Wavy::before {
+            content: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+            position: absolute;
+            top: 20vh;
+            left: 0;
+            color: transparent;
+            font-size: 4em;
+            text-decoration-style: wavy;
+            text-decoration-color: #fff;
+            text-decoration-line: underline;
+            animation: wavy1 1.6s linear infinite;
+            width: 100%;
+        }
+
+        .HeratTXT {
+            color: #fff;
+            height: 40vh;
+            font-size: 30px;
+            width: 40;
+        }
+
+        @keyframes wavy1 {
+            0% {
+                transform: translateX(-1px);
+            }
+
+            100% {
+                transform: translateX(-800px);
+
+            }
+        }
+
+        .BannerTXT {
+            font-size: 20px;
+            color: #fff;
+        }
+
+        .Lung {
+            height: 60vh;
+        }
+
+        .Lung:hover .LeftLung {
+            animation: scaleDraw, turnBlack;
+            animation-duration: 0.75s, 10s;
+            animation-timing-function: linear, linear;
+            animation-iteration-count: 10, 1;
+            animation-delay: 0, 10s;
+        }
+
+        .Lung:hover .RightLung {
+            animation: scaleDraw, turnBlack;
+            animation-duration: 0.75s, 10s;
+            animation-timing-function: linear, linear;
+            animation-iteration-count: 10, 1;
+            animation-delay: 0, 10s;
+        }
+
+        .Lung:hover .RightLung p {
+            font-size: 0px;
+        }
+
+        .LungTXT {
+            height: 30vh;
+        }
+
+        .LeftLung,
+        .RightLung {
+            width: 250px;
+            height: 350px;
+            background-color: #ff80c0;
+            margin: auto;
+            margin-top: 50px;
+            box-sizing: border-box;
+
+        }
+
+        .LeftLung {
+            margin-right: 10px;
+            border-radius: 100px;
+            border-top-left-radius: 300px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 120px;
+        }
+
+        .RightLung {
+            margin-left: 10px;
+            border-radius: 100px;
+            border-top-right-radius: 300px;
+            border-top-left-radius: 20px;
+            border-bottom-right-radius: 120px;
+            position: relative;
+        }
+
+        @keyframes turnBlack {
+            0% {
+                background-color: #ff80c0;
+            }
+
+            5% {
+                background-color: #f080a0;
+            }
+
+            10% {
+                background-color: #c080a0;
+            }
+
+            15% {
+                background-color: #af7086;
+            }
+
+            20% {
+                background-color: #6b3b52;
+            }
+
+            25% {
+                background-color: #472c39;
+            }
+
+            30% {
+                background-color: #3d2832;
+            }
+
+            40% {
+                background-color: #35242c;
+            }
+
+            45% {
+                background-color: #291a21;
+            }
+
+            50% {
+                background-color: #1f1419;
+            }
+
+            60% {
+                background-color: #22171c;
+            }
+
+            75% {
+                background-color: #291f23;
+            }
+
+            100% {
+                background-color: #222;
+                transform: scale(0.65);
+            }
+        }
+
+        @keyframes scaleDraw {
+
+            /*定義關鍵幀、scaleDrew是需要繫結到選擇器的關鍵幀名稱*/
+            0% {
+                transform: scale(1);
+
+                /*開始為原始大小*/
+            }
+
+            25% {
+                transform: scale(1.1);
+                /*放大1.1倍*/
+            }
+
+            50% {
+                transform: scale(1);
+            }
+
+            75% {
+                transform: scale(0.9);
+            }
+
+            100% {
+                transform: scale(1);
+
+            }
+        }
+
+        .RightLung p {
+            font-size: 20px;
+            color: #fff;
+            position: absolute;
+
+        }
+    </style>
 </head>
 
 <body>
+    <div id="fullpage">
+        <div class="section">
+            <div class="Dissipates">
+                <span>抽</span>
+                <span>菸</span>
+                <span>只</span>
+                <span>能</span>
+                <span>帶</span>
+                <span>給</span>
+                <span>你</span>
+                <span>短</span>
+                <span>暫</span>
+                <span>的</span>
+                <span>快</span>
+                <span>樂</span>
+            </div>
+        </div>
+        <div class="section">
+            <div class="SecPage" id="SecPage">
+                <h1 id="strip" class="SecPageTXT">
+                    For<br>
+                    Your<br>
+                    Health
+                    <h1>
+            </div>
+        </div>
+        <div class="section CigaretteArea">
+            <div class="Cigarette">
+                <span class="X">X</span>
+                <span class="CigaretteTXT"><span class="Noooo">NOOOOO</span><span class="XFront">SMOOOOOOOOKING</span><i
+                        class="LastI">|</i></span>
+            </div>
+        </div>
+        <div class="section ">
+            <div class="HeartArea">
+                <div class="WavyArea row">
+                    <div class="Wavy "></div>
+                    <div class="HeratTXT ">
+                        <p>
+                            抽菸導致你心跳加速，容易併發心肌相關症狀！
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="Lung row">
+                <div class="col-6 ">
+                    <div class="LeftLung">
+
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="RightLung">
+                        <p>hover</p>
+                    </div>
+                </div>
+            </div>
+            <div class="LungTXT">
+                <p>抽菸也會導致你的肺壞掉！</p>
+            </div>
+        </div>
+        <div class="section banner" id="banner">
+            <div class="BannerTXT">
+                <h1 class="">Quit smoking. <br> Thank You ! For you and for others health.</h1>
+            </div>
+        </div>
+
+    </div>
 
 </body>
+<script>
+    new fullpage('#fullpage', {
+        sectionsColor: ['#C0C0C0', '#fff', '#212121', '#ADD8E6', '#fff', '#000'],
+        navigation: true, // 顯示導行列
+        navigationPosition: "right", // 導行列位置
+        scrollBar: true,
+        showActiveTooltip: true,
+        slidesNavigation: true,
+    });
+    function rain() {
+        var amount = 100;
+        var i = 0;
+        while (i < amount) {
+            var drop = document.createElement('i');
+            drop.id = 'Dropi';
+            drop.className = 'Dropi';
+            var size = Math.random() * 5;
+            var posX = Math.floor(Math.random() * window.innerWidth);
+            var delay = Math.random() * -20;
+            var duration = Math.random() * 5;
+            drop.style.width = 0.2 + size + 'px';
+            drop.style.left = posX + 'px';
+            drop.style.animationDelay = delay + 's';
+            drop.style.animationDuration = 1 + duration + 's';
+            $('#banner').append(drop);
+            i++
+        }
+    }
+    window.onload = function () {
+        rain()
+    }
+
+</script>
 
 </html>

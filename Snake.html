@@ -59,12 +59,12 @@
 
             }
 
-            .snake_body {
+            .SnakeBody {
                 background: #85b8f7;
                 border-radius: 50%/50%;
             }
 
-            .snake_tail {
+            .SnakeTail {
                 background-color: #85b8f7;
                 border-radius: 50%/50%;
             }
@@ -78,7 +78,7 @@
                 border-radius: 50%/50%;
             }
 
-            .snake_head {
+            .SnakeHead {
                 background: #fa2222;
                 border-radius: 50%;
             }
@@ -97,7 +97,7 @@
                 font-weight: bold;
             }
 
-            .Keyboard_bnt {
+            .KeyboardBnt {
                 position: relative;
                 display: inline-block;
                 width: 60px;
@@ -114,7 +114,7 @@
 
             }
 
-            .Keyboard_bnt::before {
+            .KeyboardBnt::before {
                 content: '';
                 position: absolute;
                 top: 3px;
@@ -130,11 +130,11 @@
                 border-top: 1px solid #0009;
             }
 
-            .Keyboard_bnt:last-child {
+            .KeyboardBnt:last-child {
                 width: 100%;
             }
 
-            .Keyboard_bnt i {
+            .KeyboardBnt i {
                 position: relative;
                 color: #fff;
                 font-style: normal;
@@ -142,12 +142,12 @@
                 font-size: 1.5em;
             }
 
-            .Keyboard_bnt_hover {
+            .KeyboardBntHover {
                 box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
 
             }
 
-            .Keyboard_Area {
+            .KeyboardArea {
                 width: 300px;
                 position: absolute;
                 right: 20px;
@@ -175,19 +175,19 @@
             </div>
             <div class="GameArea" id="GameArea">
             </div>
-            <div class="Keyboard_Area">
+            <div class="KeyboardArea">
                 <div class="Keyboard">
-                    <span class="Keyboard_bnt" id="116" onmousedown="onmouseDownEvent(this.id)"
+                    <span class="KeyboardBnt" id="116" onmousedown="onmouseDownEvent(this.id)"
                         onmouseup="onmouseUpEvent(this.id)"><i id="F5">F5</i></span>
-                    <span class="Keyboard_bnt" id="38" onmousedown="onmouseDownEvent(this.id)"
+                    <span class="KeyboardBnt" id="38" onmousedown="onmouseDownEvent(this.id)"
                         onmouseup="onmouseUpEvent(this.id)"><i id="UP" class="fas fa-angle-up"></i></span><br>
-                    <span class="Keyboard_bnt" id="37" onmousedown="onmouseDownEvent(this.id)"
+                    <span class="KeyboardBnt" id="37" onmousedown="onmouseDownEvent(this.id)"
                         onmouseup="onmouseUpEvent(this.id)"><i id="LEFT" class="fas fa-angle-left"></i></span>
-                    <span class="Keyboard_bnt" id="40" onmousedown="onmouseDownEvent(this.id)"
+                    <span class="KeyboardBnt" id="40" onmousedown="onmouseDownEvent(this.id)"
                         onmouseup="onmouseUpEvent(this.id)"><i id="DOWN" class="fas fa-angle-down"></i></span>
-                    <span class="Keyboard_bnt" id="39" onmousedown="onmouseDownEvent(this.id)"
+                    <span class="KeyboardBnt" id="39" onmousedown="onmouseDownEvent(this.id)"
                         onmouseup="onmouseUpEvent(this.id)"><i id="RIGHT" class="fas fa-angle-right"></i></span><br>
-                    <span class="Keyboard_bnt" id="32" onmousedown="onmouseDownEvent(this.id)"
+                    <span class="KeyboardBnt" id="32" onmousedown="onmouseDownEvent(this.id)"
                         onmouseup="onmouseUpEvent(this.id)">
                         <i></i>
                     </span>
@@ -246,14 +246,14 @@
                     this.SnakeArray.push([8, 4]);
                     this.SnakeArray.push([8, 3]);
                     this.GiveSnakeClass();
-                    this.TDArray[this.SnakeArray[0][0]][this.SnakeArray[0][1]].className = "snake_head";
-                    this.TDArray[this.SnakeArray[this.SnakeArray.length - 1][0]][this.SnakeArray[this.SnakeArray.length - 1][1]].className = "snake_tail";
+                    this.TDArray[this.SnakeArray[0][0]][this.SnakeArray[0][1]].className = "SnakeHead";
+                    this.TDArray[this.SnakeArray[this.SnakeArray.length - 1][0]][this.SnakeArray[this.SnakeArray.length - 1][1]].className = "SnakeTail";
                 },
-                //給蛇的位置，給與CLASS名稱"snake_body"。
+                //給蛇的位置，給與CLASS名稱"SnakeBody"。
                 GiveSnakeClass: function () {
                     var SnakeArray = this.SnakeArray;
                     for (var i = 0; i < SnakeArray.length; i++) {
-                        this.TDArray[SnakeArray[i][0]][SnakeArray[i][1]].className = "snake_body";
+                        this.TDArray[SnakeArray[i][0]][SnakeArray[i][1]].className = "SnakeBody";
                     }
                 },
                 //初始化食物的位置
@@ -328,7 +328,7 @@
                     }
                     if (keycode >= 32 && keycode <= 40) {
                         //藉由新增CLASS 來達成CSS效果的渲染，來達成此CSS渲染可以取消的效果
-                        $(`#${keycode}`).addClass("Keyboard_bnt_hover");
+                        $(`#${keycode}`).addClass("KeyboardBntHover");
                     }
 
                     //當按下方向鍵而非暫停狀態時，方向鍵觸發移動。
@@ -345,7 +345,7 @@
                     var keycode = e ? e.keyCode : 0;
                     if (keycode >= 32 && keycode <= 40) {
                         //移除class達成css渲染被取消 並且回復成原先的css效果
-                        $(`#${keycode}`).removeClass("Keyboard_bnt_hover");
+                        $(`#${keycode}`).removeClass("KeyboardBntHover");
                     }
 
                 },
@@ -353,7 +353,7 @@
                 onmouseDown: function (id) {
                     // console.log(id)
                     //藉由新增CLASS 來達成CSS效果的渲染，來達成此CSS渲染可以取消的效果
-                    $(`#${id}`).addClass("Keyboard_bnt_hover");
+                    $(`#${id}`).addClass("KeyboardBntHover");
                     //創建一事件，此事件為鍵盤觸發事件，帶入keyCode=id，
                     var createEvent = new KeyboardEvent('keydown', {
                         altKey: true,
@@ -368,7 +368,7 @@
                 onmouseUp: function (id) {
                     // console.log(id)
                     //移除class達成css渲染被取消 並且回復成原先的css效果
-                    $(`#${id}`).removeClass("Keyboard_bnt_hover");
+                    $(`#${id}`).removeClass("KeyboardBntHover");
                 },
                 //函式修正this
                 bind: function (fn, context) {
@@ -490,8 +490,8 @@
                     }
                     this.GiveSnakeClass();
                     //console.log(this.SnakeArray)
-                    this.TDArray[headX][headY].className = "snake_head";
-                    this.TDArray[this.SnakeArray[this.SnakeArray.length - 1][0]][this.SnakeArray[this.SnakeArray.length - 1][1]].className = "snake_tail";
+                    this.TDArray[headX][headY].className = "SnakeHead";
+                    this.TDArray[this.SnakeArray[this.SnakeArray.length - 1][0]][this.SnakeArray[this.SnakeArray.length - 1][1]].className = "SnakeTail";
                 }, init: function () {
                     var _this = this;
                     snake_id = document.getElementById(_this.snakeId) || 0;
